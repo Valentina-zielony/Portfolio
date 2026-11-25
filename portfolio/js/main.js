@@ -79,7 +79,7 @@ function initPageLinks() {
       if (curtain) { curtain.classList.remove("is-done"); curtain.classList.add("is-leaving"); }
       else {
         const l = $("#loader");
-        if (l) { $$(".fall", l).forEach(f => f.remove()); l.classList.remove("is-done"); }
+        if (l) { l.innerHTML = ""; l.classList.remove("is-done"); }
       }
       setTimeout(() => (location.href = href), 700);
     });
@@ -138,81 +138,41 @@ function buildHome() {
     a.addEventListener("mouseleave", () => prev.classList.remove("show"));
   });
 
-  // Pantalla de carga: letras que caen y se apilan
+  // Pantalla de carga: tu nombre escribiéndose
   const loader = $("#loader");
   const shown = sessionStorageSafe("loaded");
   const calm = matchMedia("(prefers-reduced-motion: reduce)").matches;
   if (shown || calm) { loader.classList.add("is-done"); start(); return; }
   sessionStorageSafe("loaded", "1");
-  fallingLetters(loader, () => { loader.classList.add("is-done"); start(); });
+  writeName(loader, () => { loader.classList.add("is-done"); start(); });
 
   function start() { setTimeout(() => document.body.classList.add("is-ready"), 250); }
 }
 
-/* Letras cayendo. Para cambiar las palabras, editá PALABRAS_CARGA en proyectos.js */
-function fallingLetters(box, done) {
-  const words = [PERFIL.nombre, PERFIL.apellido, ...(typeof PALABRAS_CARGA !== "undefined" ? PALABRAS_CARGA : ["Diseño"])];
-  const chars = [...words.join("")].filter(c => c.trim());
-  const W = innerWidth, H = innerHeight;
-  const S = Math.max(30, Math.min(W, H * 1.4) * 0.075 * Math.min(1, Math.sqrt(40 / chars.length)));  // tamaño de letra
-  const colW = S * 0.7, cols = Math.max(1, Math.floor(W / colW));
-  const heights = new Array(cols).fill(0);
-  const items = [];
+/* Pantalla de carga: tu nombre se escribe letra por letra y abajo pasan palabras.
+   Para cambiar las palabras, editá PALABRAS_CARGA en proyectos.js */
+function writeName(box, done) {
+  const words = typeof PALABRAS_CARGA !== "undefined" ? PALABRAS_CARGA : ["Diseño"];
+  const line = t => [...t].map(c => `<span class="ld-ch">${c === " " ? "&nbsp;" : c}</span>`).join("");
+  box.innerHTML = `<div class="ld">
+      <div class="ld-name"><span class="ld-line">${line(PERFIL.nombre)}</span><span class="ld-line ld-last">${line(PERFIL.apellido)}</span></div>
+      <div class="ld-word"><span id="ldWord"></span></div>
+    </div>`;
+  const chars = $$(".ld-ch", box), word = $("#ldWord", box);
+  const timers = [];
+  const at = (f, ms) => timers.push(setTimeout(f, ms));
   let finished = false;
-  const finish = () => { if (finished) return; finished = true; setTimeout(done, 350); };
-  box.addEventListener("click", finish, { once: true });     // clic para saltear
+  const finish = () => { if (finished) return; finished = true; timers.forEach(clearTimeout); done(); };
+  box.addEventListener("click", finish, { once: true });   // clic para saltear
 
-  // Mezclar el orden para que caigan salteadas
-  const order = chars.map((c, i) => ({ c, i })).sort(() => Math.random() - 0.5);
-  order.forEach(({ c, i }, k) => {
-    const el = document.createElement("span");
-    el.className = "fall";
-    el.textContent = c;
-    el.style.fontSize = S + "px"; el.style.width = S + "px";
-    el.style.color = i % 3 === 0 ? "var(--ink)" : "var(--bg)";
-    box.appendChild(el);
-    const col = Math.floor(Math.random() * (cols - 1));  // se ajusta al caer
-    items.push({ el, col, x: col * colW, y: -S * 2 - Math.random() * 40, vy: 0,
-      rot: (Math.random() - .5) * 40, vr: (Math.random() - .5) * 4,
-      delay: k * Math.min(55, 2400 / chars.length), landed: false, bounces: 0 });
-    el.style.transform = `translate(${col * colW}px, ${-S * 3}px)`;
-  });
-
-  const t0 = performance.now();
-  let last = t0;
-  (function tick(now) {
-    if (finished) return;
-    const dt = Math.min(32, now - last) / 16.7; last = now;
-    let active = 0;
-    for (const it of items) {
-      if (now - t0 < it.delay) { active++; continue; }
-      if (it.landed) continue;
-      if (!it.started) {   // elegir la columna más baja entre 3 al azar, para que la pila quede pareja
-        it.started = true;
-        let best = it.col;
-        for (let n = 0; n < 3; n++) { const c = Math.floor(Math.random() * (cols - 1)); if (Math.max(heights[c], heights[c + 1]) < Math.max(heights[best], heights[best + 1])) best = c; }
-        it.col = best; it.x = best * colW;
-      }
-      active++;
-      it.vy += 0.9 * dt;
-      it.y += it.vy * dt;
-      it.rot += it.vr * dt;
-      const floor = H - Math.max(heights[it.col], heights[it.col + 1] || 0) - S * 1.05;
-      if (it.y >= floor) {
-        it.y = floor;
-        if (it.vy > 6 && it.bounces < 2) { it.vy *= -0.35; it.vr *= 0.5; it.bounces++; }
-        else {
-          it.landed = true;
-          it.rot = it.rot * 0.5; it.el.style.transform = `translate(${it.x}px, ${it.y}px) rotate(${it.rot}deg)`;
-          const top = H - it.y - S * 0.5;
-          heights[it.col] = top; if (it.col + 1 < cols) heights[it.col + 1] = Math.max(heights[it.col + 1], top - S * 0.4);
-        }
-      }
-      it.el.style.transform = `translate(${it.x}px, ${it.y}px) rotate(${it.rot}deg)`;
-    }
-    if (active === 0) finish(); else requestAnimationFrame(tick);
-  })(t0);
-  setTimeout(finish, 6000); // por las dudas, nunca más de 6 segundos
+  const step = 75;
+  chars.forEach((c, i) => at(() => c.classList.add("on"), 200 + i * step));
+  const wStart = 200 + chars.length * step * 0.6, wStep = 260;
+  words.forEach((w, i) => at(() => {
+    word.classList.remove("in"); void word.offsetWidth;
+    word.textContent = w; word.classList.add("in");
+  }, wStart + i * wStep));
+  at(finish, Math.max(200 + chars.length * step, wStart + words.length * wStep) + 450);
 }
 
 function sessionStorageSafe(k, v) {

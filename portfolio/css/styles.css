@@ -68,12 +68,25 @@ img { display: block; width: 100%; height: auto; }
   background: var(--accent); overflow: hidden;
   transition: transform 1s var(--ease);
 }
-.fall {
-  position: absolute; top: 0; left: 0;
-  font-family: var(--name); line-height: 1.2; text-align: center;
-  transform-origin: 50% 65%;
-  will-change: transform; user-select: none;
+.ld {
+  position: absolute; inset: 0; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; color: var(--bg); text-align: center;
 }
+.ld-name { font-family: var(--name); font-size: clamp(3rem, 6.5vw, 6.5rem); line-height: 1.4; }
+.ld-line { display: block; }
+.ld-ch {
+  display: inline-block; opacity: 0;
+  transform: translateY(.25em) rotate(-8deg) scale(.9);
+  transition: opacity .35s ease, transform .5s var(--ease-out);
+}
+.ld-ch.on { opacity: 1; transform: none; }
+.ld-word {
+  margin-top: 1.5rem; height: 1.6em; overflow: hidden;
+  font-size: clamp(.9rem, 1.4vw, 1.1rem); letter-spacing: .14em; text-transform: uppercase;
+}
+.ld-word span { display: block; }
+.ld-word span.in { animation: wordIn .3s var(--ease-out); }
+@keyframes wordIn { from { transform: translateY(100%); opacity: 0; } to { transform: none; opacity: 1; } }
 .loader.is-done { transform: translateY(-100%); }
 
 .curtain {
