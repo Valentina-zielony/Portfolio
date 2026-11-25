@@ -143,10 +143,9 @@ img { display: block; width: 100%; height: auto; }
 .reveal { opacity: 0; transform: translateY(40px); transition: opacity 1s var(--ease-out), transform 1s var(--ease-out); }
 .reveal.in { opacity: 1; transform: none; }
 .is-ready .hero .reveal { opacity: 1; transform: none; transition-delay: .7s; }
-.reveal-img { overflow: hidden; clip-path: inset(100% 0 0 0); transition: clip-path 1.4s var(--ease); }
-.reveal-img img { transform: scale(1.25); transition: transform 1.8s var(--ease-out); }
-.reveal-img.in { clip-path: inset(0 0 0 0); }
-.reveal-img.in img { transform: scale(1); }
+.reveal-img { overflow: hidden; }
+.reveal-img img { clip-path: inset(100% 0 0 0); transform: scale(1.25); transition: clip-path 1.4s var(--ease), transform 1.8s var(--ease-out); }
+.reveal-img.in img { clip-path: inset(0 0 0 0); transform: scale(1); }
 
 /* ---------- Hero ---------- */
 .hero {
@@ -243,14 +242,16 @@ img { display: block; width: 100%; height: auto; }
 /* ---------- Sobre mí ---------- */
 .about {
   padding: 6rem var(--pad);
-  display: grid; grid-template-columns: 1fr 1.4fr; gap: clamp(2rem, 6vw, 6rem); align-items: end;
+  display: grid; grid-template-columns: auto 1fr; gap: clamp(2rem, 5vw, 5rem); align-items: start;
   border-top: 1px solid var(--line);
 }
-.about__img { aspect-ratio: 4/5; border-radius: 4px; }
-.about__img img { height: 100%; object-fit: cover; }
-.about__bio { font-family: var(--serif); font-size: clamp(1.3rem, 2.2vw, 2rem); line-height: 1.3; margin-bottom: 2rem; }
+/* La foto mide lo mismo que el bloque "Sobre mí" + párrafo (se ajusta solo con JS) */
+.about__img { aspect-ratio: 4/5; border-radius: 4px; width: 280px; }
+.about__img img { height: 100%; object-fit: cover; object-position: 50% 30%; }
+.about__bio { font-family: var(--serif); font-size: clamp(1.3rem, 2.2vw, 2rem); line-height: 1.3; }
+.about__uni { margin-top: 2rem; }
 .about__uni { color: var(--muted); }
-@media (max-width: 800px) { .about { grid-template-columns: 1fr; } .about__img { max-width: 420px; } }
+@media (max-width: 800px) { .about { grid-template-columns: 1fr; } .about__img { width: 100%; max-width: 420px; height: auto !important; } }
 
 /* ---------- Contacto ---------- */
 .contact { padding: 8rem var(--pad); text-align: center; background: var(--ink); color: var(--bg); }
@@ -286,7 +287,8 @@ img { display: block; width: 100%; height: auto; }
 @media (max-width: 800px) { .p-desc { grid-template-columns: 1fr; } }
 
 .p-gallery { padding: 0 var(--pad) 6rem; display: grid; grid-template-columns: 1fr 1fr; gap: clamp(1rem, 2vw, 2rem); }
-.p-gallery figure:nth-child(3n+1) { grid-column: 1 / -1; }
+.p-gallery figure { grid-column: 1 / -1; }
+.p-gallery figure.half { grid-column: auto; }
 .p-gallery .reveal-img { border-radius: 4px; }
 .p-gallery figcaption { font-size: .8rem; color: var(--muted); margin-top: .6rem; }
 @media (max-width: 700px) { .p-gallery { grid-template-columns: 1fr; } }
@@ -305,7 +307,7 @@ img { display: block; width: 100%; height: auto; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
   .split .char { transform: none; }
-  .reveal, .reveal-img, .reveal-img img { opacity: 1; transform: none; clip-path: none; }
+  .reveal, .reveal-img img { opacity: 1; transform: none; clip-path: none; }
 }
 
 /* Ajustes para DM Sans en títulos grandes */

@@ -248,7 +248,7 @@ function buildProject() {
   $("#pDesc").textContent = p.descripcion;
   $("#pCover").src = p.portada; $("#pCover").alt = p.titulo;
   $("#pGallery").innerHTML = (p.imagenes || []).map(im => `
-    <figure>
+    <figure class="${im.ancho === "medio" ? "half" : ""}">
       <div class="reveal-img"><img src="${im.src}" alt="${im.texto || p.titulo}" loading="lazy" /></div>
       ${im.texto ? `<figcaption>${im.texto}</figcaption>` : ""}
     </figure>`).join("");
@@ -263,6 +263,16 @@ function buildProject() {
   });
 }
 
+/* ---------- Foto de "Sobre mí": mismo alto que el texto ---------- */
+function fitAbout() {
+  const box = $(".about__img"), copy = $(".about__copy");
+  if (!box || !copy) return;
+  if (innerWidth <= 800) { box.style.height = box.style.width = ""; return; }
+  const h = copy.offsetHeight;
+  box.style.height = h + "px";
+  box.style.width = Math.round(h * 0.8) + "px";
+}
+
 /* ---------- Arranque ---------- */
 fillProfile();
 if (isHome) buildHome(); else buildProject();
@@ -270,6 +280,9 @@ splitText();
 initReveal();
 initCursor();
 initPageLinks();
+fitAbout();
+addEventListener("resize", fitAbout);
+if (document.fonts) document.fonts.ready.then(fitAbout);
 // Si se vuelve con el botón "atrás", sacar la cortina
 addEventListener("pageshow", e => {
   if (e.persisted) {
