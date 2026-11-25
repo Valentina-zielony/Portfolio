@@ -3,10 +3,10 @@
    personalizar todo el sitio de una vez.
    ========================================================= */
 :root {
-  --bg: #ecebe6;          /* fondo */
+  --bg: #f6f6f4;          /* fondo */
   --ink: #141414;         /* texto */
   --muted: #8a8780;       /* texto secundario */
-  --accent: #ff4b1f;      /* color de acento */
+  --accent: #0b9e4f;      /* color de acento */
   --line: rgba(20, 20, 20, 0.15);
   --serif: "Instrument Serif", Georgia, serif;
   --sans: "Inter Tight", system-ui, sans-serif;
@@ -101,7 +101,7 @@ img { display: block; width: 100%; height: auto; }
 @media (max-width: 600px) { .nav__links { gap: 1rem; font-size: .8rem; } }
 
 /* ---------- Animación de texto (letras que suben) ---------- */
-.line { display: block; overflow: hidden; }
+.line { display: block; overflow: hidden; padding: 0 .06em .12em 0; margin-bottom: -.12em; }
 .split .char {
   display: inline-block;
   transform: translateY(110%);

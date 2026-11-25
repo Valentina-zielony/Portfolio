@@ -4,12 +4,12 @@
    ========================================================= */
 
 const PERFIL = {
-  nombre: "Tu Nombre",
-  apellido: "Apellido",
-  rol: "Diseño Gráfico",
+  nombre: "Valentina",
+  apellido: "Zielony",
+  rol: "Diseño Gráfico & Comunicación Visual",
   ciudad: "Buenos Aires",
-  universidad: "Estudiante de Diseño Gráfico — Universidad",
-  bio: "Soy estudiante de diseño gráfico. Me interesa la identidad visual, el diseño editorial y la tipografía. Busco que cada pieza cuente una historia clara y tenga una personalidad propia.",
+  universidad: "Lic. en Diseño Gráfico y Comunicación Visual — UCES · Publicidad — UADE",
+  bio: "Soy diseñadora gráfica y me muevo entre la creatividad y la estrategia. Vengo de la publicidad y trabajé en una agencia de branding, donde diseñé campañas, lanzamientos y contenido para marcas. Me gusta seguir los proyectos de punta a punta y trabajar en equipo.",
   foto: "img/perfil.svg",
   email: "tuemail@gmail.com",
   redes: [
