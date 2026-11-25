@@ -8,10 +8,10 @@ const PERFIL = {
   apellido: "Zielony",
   rol: "Diseño Gráfico & Comunicación Visual",
   ciudad: "Buenos Aires",
-  universidad: "Lic. en Diseño Gráfico y Comunicación Visual — UCES · Publicidad — UADE",
-  bio: "Soy diseñadora gráfica y me muevo entre la creatividad y la estrategia. Vengo de la publicidad y trabajé en una agencia de branding, donde diseñé campañas, lanzamientos y contenido para marcas. Me gusta seguir los proyectos de punta a punta y trabajar en equipo.",
+  universidad: "Estudiante de la Lic. en Diseño Gráfico y Comunicación Visual — UCES",
+  bio: "Soy estudiante de Diseño Gráfico y Comunicación Visual. Me apasionan el branding y el diseño editorial: construir identidades con personalidad y darle ritmo a la página. Disfruto el proceso de buscar la idea, jugar con la tipografía y cuidar cada detalle hasta que la pieza diga exactamente lo que tiene que decir.",
   foto: "img/perfil.svg",
-  email: "tuemail@gmail.com",
+  email: "val.zielony@gmail.com",
   redes: [
     { nombre: "Instagram", url: "https://instagram.com/" },
     { nombre: "Behance", url: "https://behance.net/" },
