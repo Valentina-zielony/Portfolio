@@ -19,6 +19,9 @@ const PERFIL = {
   ]
 };
 
+/* Palabras que caen en la pantalla de carga (además de tu nombre y apellido) */
+const PALABRAS_CARGA = ["Diseño", "Branding", "Editorial", "Tipografía", "Ilustración", "Creatividad"];
+
 /*
   Cada proyecto es un bloque { ... }. Para agregar uno nuevo:
   1. Copiá un bloque entero (desde { hasta },)
