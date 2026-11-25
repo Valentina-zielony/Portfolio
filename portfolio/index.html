@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portfolio — Diseño Gráfico</title>
+  <meta name="description" content="Portfolio de diseño gráfico" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body class="home">
+
+  <!-- Pantalla de carga -->
+  <div class="loader" id="loader">
+    <span class="loader__count" id="loaderCount">0</span>
+  </div>
+
+  <!-- Cursor personalizado -->
+  <div class="cursor" id="cursor"><span class="cursor__label" id="cursorLabel">Ver</span></div>
+  <!-- Imagen que sigue al mouse en la lista de trabajos -->
+  <div class="preview" id="preview"><img id="previewImg" alt="" /></div>
+
+  <header class="nav">
+    <a href="index.html" class="nav__logo" data-nombre>Tu Nombre</a>
+    <nav class="nav__links">
+      <a href="#trabajos">Trabajos</a>
+      <a href="#sobre-mi">Sobre mí</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+  </header>
+
+  <main>
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero__meta">
+        <span data-ciudad>Buenos Aires</span>
+        <span>Portfolio <span id="year"></span></span>
+      </div>
+      <h1 class="hero__title">
+        <span class="line"><span class="split" data-nombre>Tu Nombre</span></span>
+        <span class="line line--right"><em class="split" data-apellido>Apellido</em></span>
+      </h1>
+      <div class="hero__bottom">
+        <p class="hero__rol reveal" data-rol>Diseño Gráfico</p>
+        <a href="#trabajos" class="hero__scroll reveal">Scroll <span class="arrow">↓</span></a>
+      </div>
+    </section>
+
+    <!-- CINTA EN MOVIMIENTO -->
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee__track" id="marquee"></div>
+    </div>
+
+    <!-- TRABAJOS -->
+    <section class="works" id="trabajos">
+      <div class="section-head reveal">
+        <h2>Trabajos <sup id="worksCount"></sup></h2>
+        <div class="filters" id="filters"></div>
+      </div>
+      <ul class="works__list" id="worksList"></ul>
+    </section>
+
+    <!-- SOBRE MÍ -->
+    <section class="about" id="sobre-mi">
+      <div class="about__img reveal-img"><img data-foto src="img/perfil.svg" alt="Foto de perfil" /></div>
+      <div class="about__text">
+        <p class="label reveal">Sobre mí</p>
+        <p class="about__bio reveal" data-bio></p>
+        <p class="about__uni reveal" data-universidad></p>
+      </div>
+    </section>
+
+    <!-- CONTACTO -->
+    <section class="contact" id="contacto">
+      <p class="label reveal">¿Hablamos?</p>
+      <a class="contact__mail reveal" data-email href="#">tuemail@gmail.com</a>
+      <div class="contact__social reveal" id="social"></div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span>© <span id="year2"></span> <span data-nombre-completo></span></span>
+    <a href="#" class="totop">Volver arriba ↑</a>
+  </footer>
+
+  <script src="js/proyectos.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

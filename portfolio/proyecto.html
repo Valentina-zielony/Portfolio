@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Proyecto — Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body class="project-page">
+
+  <div class="curtain" id="curtain"></div>
+  <div class="cursor" id="cursor"><span class="cursor__label" id="cursorLabel">Ver</span></div>
+
+  <header class="nav">
+    <a href="index.html" class="nav__logo" data-nombre>Tu Nombre</a>
+    <nav class="nav__links">
+      <a href="index.html#trabajos">← Todos los trabajos</a>
+    </nav>
+  </header>
+
+  <main id="project">
+    <section class="p-hero">
+      <p class="label reveal" id="pCat"></p>
+      <h1 class="p-hero__title"><span class="line"><span class="split" id="pTitle"></span></span></h1>
+      <div class="p-hero__info reveal">
+        <div><span class="label">Año</span><span id="pYear"></span></div>
+        <div><span class="label">Materia</span><span id="pMateria"></span></div>
+        <div><span class="label">Categoría</span><span id="pCat2"></span></div>
+      </div>
+    </section>
+
+    <div class="p-cover reveal-img"><img id="pCover" alt="" /></div>
+
+    <section class="p-desc">
+      <p class="label reveal">Sobre el proyecto</p>
+      <p class="p-desc__text reveal" id="pDesc"></p>
+    </section>
+
+    <section class="p-gallery" id="pGallery"></section>
+
+    <a class="p-next" id="pNext" href="#">
+      <span class="label">Siguiente proyecto</span>
+      <span class="p-next__title" id="pNextTitle"></span>
+    </a>
+  </main>
+
+  <footer class="footer">
+    <span>© <span id="year2"></span> <span data-nombre-completo></span></span>
+    <a href="index.html#contacto">Contacto</a>
+  </footer>
+
+  <script src="js/proyectos.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
