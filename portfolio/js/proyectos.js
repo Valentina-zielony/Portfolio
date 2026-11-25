@@ -19,7 +19,10 @@ const PERFIL = {
   ]
 };
 
-/* Palabras que caen en la pantalla de carga (además de tu nombre y apellido) */
+/* Estilo del cursor: "marcador" (trazo que se borra) o "mancha" (resplandor difuminado) */
+const ESTILO_CURSOR = "marcador";
+
+/* Palabras que pasan en la pantalla de carga, debajo de tu nombre */
 const PALABRAS_CARGA = ["Diseño", "Branding", "Editorial", "Tipografía", "Ilustración", "Creatividad"];
 
 /*

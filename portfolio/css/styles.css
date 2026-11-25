@@ -59,7 +59,20 @@ img { display: block; width: 100%; height: auto; }
 .cursor.is-hover { width: 48px; height: 48px; }
 .cursor.is-view { width: 90px; height: 90px; mix-blend-mode: normal; background: var(--accent); }
 .cursor.is-view .cursor__label { opacity: 1; color: #fff; }
-@media (hover: none) { .cursor { display: none; } }
+/* Mancha verde difuminada */
+.blob {
+  position: fixed; top: 0; left: 0; z-index: 999;
+  width: 340px; height: 340px; border-radius: 50%;
+  background: radial-gradient(circle, var(--accent) 0%, rgba(11, 158, 79, 0) 70%);
+  filter: blur(30px);
+  opacity: 0; pointer-events: none;
+  mix-blend-mode: multiply;
+  transition: opacity .6s ease, width .6s var(--ease-out), height .6s var(--ease-out);
+}
+.blob.on { opacity: .45; }
+.blob.big { width: 480px; height: 480px; }
+.marker { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 998; pointer-events: none; mix-blend-mode: multiply; }
+@media (hover: none) { .cursor, .blob, .marker { display: none; } }
 @media (hover: hover) { body, a { cursor: none; } }
 
 /* ---------- Loader ---------- */

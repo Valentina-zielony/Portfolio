@@ -52,19 +52,68 @@ function initReveal() {
 function initCursor() {
   const c = $("#cursor");
   if (!c || matchMedia("(hover: none)").matches) return;
-  let x = innerWidth / 2, y = innerHeight / 2, cx = x, cy = y;
-  addEventListener("mousemove", e => { x = e.clientX; y = e.clientY; });
+  const modo = typeof ESTILO_CURSOR !== "undefined" ? ESTILO_CURSOR : "mancha";
+  if (modo === "marcador") initMarker();
+  // Mancha verde difuminada que sigue al mouse con un poco de retraso
+  const blob = document.createElement("div");
+  blob.className = "blob";
+  if (modo === "mancha") document.body.appendChild(blob);
+  let x = innerWidth / 2, y = innerHeight / 2, cx = x, cy = y, bx = x, by = y;
+  addEventListener("mousemove", e => { x = e.clientX; y = e.clientY; blob.classList.add("on"); });
+  document.addEventListener("mouseleave", () => blob.classList.remove("on"));
   (function loop() {
-    cx += (x - cx) * 0.2; cy += (y - cy) * 0.2;
+    cx += (x - cx) * 0.25; cy += (y - cy) * 0.25;
+    bx += (x - bx) * 0.08; by += (y - by) * 0.08;
     c.style.transform = `translate(${cx}px, ${cy}px) translate(-50%, -50%)`;
+    blob.style.transform = `translate(${bx}px, ${by}px) translate(-50%, -50%)`;
     requestAnimationFrame(loop);
   })();
   document.addEventListener("mouseover", e => {
     const view = e.target.closest("[data-cursor='view']");
     const link = e.target.closest("a, button");
     c.classList.toggle("is-view", !!view);
+    blob.classList.toggle("big", !!view || !!link);
     c.classList.toggle("is-hover", !view && !!link);
   });
+}
+
+/* ---------- Trazo de marcador: el mouse deja una línea que se borra sola ---------- */
+function initMarker() {
+  const cv = document.createElement("canvas");
+  cv.className = "marker";
+  document.body.appendChild(cv);
+  const ctx = cv.getContext("2d");
+  const hex = (getComputedStyle(document.documentElement).getPropertyValue("--accent").trim() || "#0b9e4f").replace("#", "");
+  const [r, g, bl] = [0, 2, 4].map(i => parseInt(hex.substr(i, 2), 16));
+  // Mezcla el color con blanco según la "vida" del trazo (con multiply, blanco = invisible)
+  const tone = k => `rgb(${Math.round(255 - (255 - r) * k)},${Math.round(255 - (255 - g) * k)},${Math.round(255 - (255 - bl) * k)})`;
+  const LIFE = 650;          // cuánto dura el trazo (milisegundos)
+  const MAX_W = 9;           // grosor máximo del trazo
+  let pts = [];
+  const size = () => {
+    const d = devicePixelRatio || 1;
+    cv.width = innerWidth * d; cv.height = innerHeight * d;
+    ctx.setTransform(d, 0, 0, d, 0, 0);
+  };
+  size(); addEventListener("resize", size);
+  addEventListener("mousemove", e => pts.push({ x: e.clientX, y: e.clientY, t: performance.now() }));
+  addEventListener("scroll", () => (pts = []), { passive: true });
+  ctx.lineCap = "round"; ctx.lineJoin = "round";
+  (function draw(now) {
+    pts = pts.filter(p => now - p.t < LIFE);
+    ctx.clearRect(0, 0, innerWidth, innerHeight);
+    for (let i = 1; i < pts.length; i++) {
+      const a = pts[i - 1], b = pts[i];
+      const life = 1 - (now - b.t) / LIFE;
+      ctx.strokeStyle = tone(Math.max(0, life));
+      ctx.lineWidth = 1.5 + MAX_W * life;
+      ctx.beginPath();
+      const mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2;
+      ctx.moveTo(a.x, a.y); ctx.quadraticCurveTo(mx, my, b.x, b.y);
+      ctx.stroke();
+    }
+    requestAnimationFrame(draw);
+  })(performance.now());
 }
 
 /* ---------- Transición suave al cambiar de página ---------- */
